@@ -57,6 +57,9 @@ CREATE TABLE book(
     id_author UUID NOT NULL REFERENCES author(id)
 );
 
+-- JPA não consegue trabalhar direito com tipos enum do banco, então ajudamos aqui ...
+CREATE CAST (varchar AS egenre) WITH INOUT AS IMPLICIT;
+
 -- Concede permissões nas tabelas/sequências criadas
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO library_user;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO library_user;

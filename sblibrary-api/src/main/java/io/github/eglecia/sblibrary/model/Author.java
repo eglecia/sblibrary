@@ -3,6 +3,7 @@ package io.github.eglecia.sblibrary.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Table(schema = "public", name = "author")
 @Getter // Plugin Lombok irá gerar os métodos getters e setters automaticamente em tempo de compilação
 @Setter
+@ToString
 public class Author {
     @Id
     @GeneratedValue // O banco já gerar essa valor por default
