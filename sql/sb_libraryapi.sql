@@ -43,7 +43,9 @@ CREATE TABLE author(
     id UUID NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
     name varchar(100) NOT NULL,
     dt_birthday date NOT NULL,
-    nationality varchar(50) NOT NULL
+    nationality varchar(50) NOT NULL,
+    dt_created TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    dt_updated TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
 
 -- Tabela book
@@ -54,7 +56,9 @@ CREATE TABLE book(
     dt_published date NOT NULL,
     genre egenre NOT NULL,
     price numeric(18,2) NOT NULL,
-    id_author UUID NOT NULL REFERENCES author(id)
+    id_author UUID NOT NULL REFERENCES author(id),
+    dt_created TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    dt_updated TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
 
 -- JPA não consegue trabalhar direito com tipos enum do banco, então ajudamos aqui ...
