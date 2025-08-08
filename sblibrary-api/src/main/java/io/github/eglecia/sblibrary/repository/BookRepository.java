@@ -1,5 +1,6 @@
 package io.github.eglecia.sblibrary.repository;
 
+import io.github.eglecia.sblibrary.model.Author;
 import io.github.eglecia.sblibrary.model.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,6 +14,8 @@ public interface BookRepository extends JpaRepository<Book, UUID> {
     // Seguindo esse padrão de nomenclatura, o Spring Data JPA irá gerar a consulta automaticamente
     // Query Method: findByAuthorId
     List<Book> findByAuthorId(UUID authorId);
+
+    boolean existsByAuthor(Author author);
 
     // JPQL -> Formato sql mas referenciando as entidades e propriedades
     @Query("SELECT b FROM Book b WHERE b.author.id = :authorId")

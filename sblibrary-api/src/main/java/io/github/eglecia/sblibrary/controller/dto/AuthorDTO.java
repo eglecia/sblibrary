@@ -3,8 +3,10 @@ package io.github.eglecia.sblibrary.controller.dto;
 import io.github.eglecia.sblibrary.model.Author;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
-public record AuthorDTO(String name,
+public record AuthorDTO(UUID id,
+                        String name,
                         LocalDate dtBirthday,
                         String nationality) {
 
