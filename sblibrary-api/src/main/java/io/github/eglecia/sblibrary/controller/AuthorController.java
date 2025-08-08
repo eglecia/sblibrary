@@ -6,6 +6,7 @@ import io.github.eglecia.sblibrary.exceptions.OperationNotPermitted;
 import io.github.eglecia.sblibrary.exceptions.RegistryDuplicatedException;
 import io.github.eglecia.sblibrary.model.Author;
 import io.github.eglecia.sblibrary.service.AuthorService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -27,7 +28,7 @@ public class AuthorController {
     }
     
     @PostMapping
-    public ResponseEntity<Object> createAuthor(@RequestBody AuthorDTO author) {
+    public ResponseEntity<Object> createAuthor(@RequestBody @Valid AuthorDTO author) {
         try {
             Author authorEntity = author.toAuthor();
             authorService.save(authorEntity);
@@ -87,7 +88,7 @@ public class AuthorController {
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "nationality", required = false) String nationality) {
 
-        List<Author> result = authorService.find(name, nationality);
+        List<Author> result = authorService.findByExample(name, nationality);
 
         List<AuthorDTO> authorsDTO = result.stream()
                 .map(author -> new AuthorDTO(
@@ -101,7 +102,7 @@ public class AuthorController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateAuthor(
-            @PathVariable("id") String id,  @RequestBody AuthorDTO authorDTO) {
+            @PathVariable("id") String id, @RequestBody @Valid AuthorDTO authorDTO) {
         try {
             UUID idAuthor = UUID.fromString(id);
             Optional<Author> authorOptional = authorService.findById(idAuthor);

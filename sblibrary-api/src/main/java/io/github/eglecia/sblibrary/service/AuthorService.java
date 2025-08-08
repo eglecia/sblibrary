@@ -6,8 +6,8 @@ import io.github.eglecia.sblibrary.repository.AuthorRepository;
 import io.github.eglecia.sblibrary.repository.BookRepository;
 import io.github.eglecia.sblibrary.validator.AuthorValidator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -82,6 +82,21 @@ public class AuthorService {
         else {
             return repository.findAll();
         }
+    }
+
+    public List<Author> findByExample(String name, String nationality) {
+        Author author = new Author();
+        author.setName(name);
+        author.setNationality(nationality);
+
+        ExampleMatcher matcher = ExampleMatcher
+                .matching()
+                .withIgnoreNullValues() // Ignora campos nulos
+                .withIgnoreCase() // Ignora maiúsculas/minúsculas
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING); // Busca por substring
+
+        Example<Author> authorExample = Example.of(author, matcher);
+        return repository.findAll(authorExample);
     }
 
     public boolean areThereBooks(Author author) {
