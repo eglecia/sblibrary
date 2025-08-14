@@ -2,6 +2,7 @@ package io.github.eglecia.sblibrary.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +11,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import javax.sql.DataSource;
 
 @Configuration
+@Slf4j
 public class DatasourceConfiguration {
     @Value("${spring.datasource.url}")
     private String url;
@@ -38,6 +40,8 @@ public class DatasourceConfiguration {
      */
     @Bean
     public DataSource dataSourcePool() {
+        log.info("Iniciando pool de conexões com o banco na URL: {}", url);
+
         HikariConfig hc = new HikariConfig();
         hc.setJdbcUrl(url);
         hc.setUsername(username);
