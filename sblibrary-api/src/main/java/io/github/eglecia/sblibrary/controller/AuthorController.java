@@ -1,17 +1,13 @@
 package io.github.eglecia.sblibrary.controller;
 
 import io.github.eglecia.sblibrary.controller.dto.AuthorDTO;
-import io.github.eglecia.sblibrary.controller.dto.ResponseError;
 import io.github.eglecia.sblibrary.controller.mappers.AuthorMapper;
-import io.github.eglecia.sblibrary.exceptions.OperationNotPermitted;
-import io.github.eglecia.sblibrary.exceptions.RegistryDuplicatedException;
 import io.github.eglecia.sblibrary.model.Author;
 import io.github.eglecia.sblibrary.service.AuthorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
@@ -29,20 +25,15 @@ public class AuthorController implements GenericController{
     private final AuthorMapper mapper;
 
     @PostMapping
-    public ResponseEntity<Object> createAuthor(@RequestBody @Valid AuthorDTO dto) {
-        try {
-            Author author = mapper.toEntity(dto);
-            authorService.save(author);
+    public ResponseEntity<Void> createAuthor(@RequestBody @Valid AuthorDTO dto) {
+        Author author = mapper.toEntity(dto);
+        authorService.save(author);
 
-            // Cria o URI do recurso recém-criado
-            // Ex: http://localhost:8080/api/v1/authors/{id}
-            URI location = createHeaderLocation(author.getId());
+        // Cria o URI do recurso recém-criado
+        // Ex: http://localhost:8080/api/v1/authors/{id}
+        URI location = createHeaderLocation(author.getId());
 
-            return ResponseEntity.created(location).build();
-        } catch (RegistryDuplicatedException e) {
-            var errorDTO = ResponseError.conflictResponse(e.getMessage());
-            return ResponseEntity.status(errorDTO.status()).body(errorDTO);
-        }
+        return ResponseEntity.created(location).build();
     }
 
     @GetMapping("/{id}")
@@ -58,20 +49,15 @@ public class AuthorController implements GenericController{
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteAuthor(@PathVariable("id") String id){
-        try {
-            UUID idAuthor = UUID.fromString(id);
-            Optional<Author> authorOptional = authorService.findById(idAuthor);
-            if (authorOptional.isEmpty()) {
-                return ResponseEntity.notFound().build();
-            }
-
-            authorService.delete(authorOptional.get());
-            return ResponseEntity.noContent().build();
-        } catch(OperationNotPermitted e) {
-            var errorResp = ResponseError.defaultResponse((e.getMessage()));
-            return ResponseEntity.status(errorResp.status()).body(errorResp);
+    public ResponseEntity<Void> deleteAuthor(@PathVariable("id") String id){
+        UUID idAuthor = UUID.fromString(id);
+        Optional<Author> authorOptional = authorService.findById(idAuthor);
+        if (authorOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
+
+        authorService.delete(authorOptional.get());
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping
@@ -90,25 +76,21 @@ public class AuthorController implements GenericController{
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateAuthor(
+    public ResponseEntity<Void> updateAuthor(
             @PathVariable("id") String id, @RequestBody @Valid AuthorDTO authorDTO) {
-        try {
-            UUID idAuthor = UUID.fromString(id);
-            Optional<Author> authorOptional = authorService.findById(idAuthor);
-            if (authorOptional.isEmpty()) {
-                return ResponseEntity.notFound().build();
-            }
 
-            Author author = authorOptional.get();
-            author.setName(authorDTO.name());
-            author.setDtBirthday(authorDTO.dtBirthday());
-            author.setNationality(authorDTO.nationality());
-            authorService.update(author);
-
-            return ResponseEntity.noContent().build();
-        } catch(RegistryDuplicatedException e) {
-            var errorDTO = ResponseError.conflictResponse(e.getMessage());
-            return ResponseEntity.status(errorDTO.status()).body(errorDTO);
+        UUID idAuthor = UUID.fromString(id);
+        Optional<Author> authorOptional = authorService.findById(idAuthor);
+        if (authorOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
+
+        Author author = authorOptional.get();
+        author.setName(authorDTO.name());
+        author.setDtBirthday(authorDTO.dtBirthday());
+        author.setNationality(authorDTO.nationality());
+        authorService.update(author);
+
+        return ResponseEntity.noContent().build();
     }
 }
