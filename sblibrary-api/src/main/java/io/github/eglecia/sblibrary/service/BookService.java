@@ -1,11 +1,15 @@
 package io.github.eglecia.sblibrary.service;
 
 import io.github.eglecia.sblibrary.exceptions.RegistryDuplicatedException;
+import io.github.eglecia.sblibrary.model.Author;
 import io.github.eglecia.sblibrary.model.Book;
 import io.github.eglecia.sblibrary.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -21,5 +25,9 @@ public class BookService {
         } catch (DataIntegrityViolationException e) {
             throw new RegistryDuplicatedException("Livro duplicado: " + e.getMostSpecificCause().getMessage());
         }
+    }
+
+    public Optional<Book> findById(UUID id) {
+        return bookRepository.findById(id);
     }
 }
