@@ -51,7 +51,7 @@ CREATE TABLE author(
 -- Tabela book
 CREATE TABLE book(
     id UUID NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
-    isbn varchar(30) NOT NULL,
+    isbn varchar(30) UNIQUE NOT NULL,
     title varchar(100) NOT NULL,
     dt_published date NOT NULL,
     genre egenre NOT NULL,

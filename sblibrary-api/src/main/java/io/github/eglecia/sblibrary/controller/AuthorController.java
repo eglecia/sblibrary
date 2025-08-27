@@ -2,11 +2,13 @@ package io.github.eglecia.sblibrary.controller;
 
 import io.github.eglecia.sblibrary.controller.dto.AuthorDTO;
 import io.github.eglecia.sblibrary.controller.dto.ResponseError;
+import io.github.eglecia.sblibrary.controller.mappers.AuthorMapper;
 import io.github.eglecia.sblibrary.exceptions.OperationNotPermitted;
 import io.github.eglecia.sblibrary.exceptions.RegistryDuplicatedException;
 import io.github.eglecia.sblibrary.model.Author;
 import io.github.eglecia.sblibrary.service.AuthorService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -15,31 +17,26 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 @RestController
 @RequestMapping("api/v1/authors")
-public class AuthorController {
+@RequiredArgsConstructor
+public class AuthorController implements GenericController{
 
     private final AuthorService authorService;
+    private final AuthorMapper mapper;
 
-    public AuthorController(AuthorService authorService) {
-        this.authorService = authorService;
-    }
-    
     @PostMapping
-    public ResponseEntity<Object> createAuthor(@RequestBody @Valid AuthorDTO author) {
+    public ResponseEntity<Object> createAuthor(@RequestBody @Valid AuthorDTO dto) {
         try {
-            Author authorEntity = author.toAuthor();
-            authorService.save(authorEntity);
+            Author author = mapper.toEntity(dto);
+            authorService.save(author);
 
             // Cria o URI do recurso recém-criado
             // Ex: http://localhost:8080/api/v1/authors/{id}
-            URI location = ServletUriComponentsBuilder
-                    .fromCurrentRequest()
-                    .path("/{id}")
-                    .buildAndExpand(authorEntity.getId())
-                    .toUri();
+            URI location = createHeaderLocation(author.getId());
 
             return ResponseEntity.created(location).build();
         } catch (RegistryDuplicatedException e) {
@@ -51,19 +48,13 @@ public class AuthorController {
     @GetMapping("/{id}")
     public ResponseEntity<AuthorDTO> detailAuthor(@PathVariable("id") String id) {
         UUID idAuthor = UUID.fromString(id);
-        Optional<Author> authorOptional = authorService.findById(idAuthor);
-        if(authorOptional.isPresent()) {
-            Author author = authorOptional.get();
-            AuthorDTO authorDTO = new AuthorDTO(
-                    author.getId(),
-                    author.getName(),
-                    author.getDtBirthday(),
-                    author.getNationality()
-            );
-            return ResponseEntity.ok(authorDTO);
-        }
 
-        return ResponseEntity.notFound().build();
+        return authorService
+                .findById(idAuthor)
+                .map(author -> {
+                    AuthorDTO authorDTO = mapper.toDTO(author);
+                    return ResponseEntity.ok(authorDTO);
+                }).orElseGet( () -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
@@ -90,13 +81,11 @@ public class AuthorController {
 
         List<Author> result = authorService.findByExample(name, nationality);
 
-        List<AuthorDTO> authorsDTO = result.stream()
-                .map(author -> new AuthorDTO(
-                        author.getId(),
-                        author.getName(),
-                        author.getDtBirthday(),
-                        author.getNationality()))
-                .toList();
+        List<AuthorDTO> authorsDTO = result
+                .stream()
+                .map(mapper::toDTO)
+                .collect(Collectors.toList());
+
         return ResponseEntity.ok(authorsDTO);
     }
 

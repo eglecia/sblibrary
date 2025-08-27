@@ -5,15 +5,20 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import lombok.Data;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(schema = "public", name = "book")
 @Data // Lombok irá gerar os métodos getters, setters, equals, hashCode e toString automaticamente em tempo de compilação
 @ToString
+@EntityListeners(AuditingEntityListener.class)
 public class Book {
     @Id
     @GeneratedValue
@@ -39,6 +44,14 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "id_author")
     private Author author;
+
+    @CreatedDate
+    @Column(name = "dt_created")
+    private LocalDateTime dtCreated;
+
+    @LastModifiedDate
+    @Column(name = "dt_updated")
+    private LocalDateTime dtUpdated;
 
     // Java cria um construtor vazio por padrão
 }
