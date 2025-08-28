@@ -4,6 +4,7 @@ import io.github.eglecia.sblibrary.controller.dto.RegisterBookDTO;
 import io.github.eglecia.sblibrary.controller.dto.ResultBookDTO;
 import io.github.eglecia.sblibrary.controller.mappers.BookMapper;
 import io.github.eglecia.sblibrary.model.Book;
+import io.github.eglecia.sblibrary.model.EBookGenre;
 import io.github.eglecia.sblibrary.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -52,5 +55,23 @@ public class BookController implements GenericController{
                     bookService.delete(book);
                     return ResponseEntity.noContent().build();
                 }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ResultBookDTO>> findBooks(
+            @RequestParam(value = "isbn", required = false) String isbn,
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "author-name", required = false) String authorName,
+            @RequestParam(value = "genre", required = false) EBookGenre genre,
+            @RequestParam(value = "year-published", required = false) Integer yearPublished
+    ) {
+        var result = bookService.find(isbn, title, authorName, genre, yearPublished);
+
+        var listDTO = result
+                .stream()
+                .map(bookMapper::toDTO)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(listDTO);
     }
 }
