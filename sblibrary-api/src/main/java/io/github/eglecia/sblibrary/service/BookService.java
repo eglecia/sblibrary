@@ -1,17 +1,19 @@
 package io.github.eglecia.sblibrary.service;
 
 import io.github.eglecia.sblibrary.exceptions.RegistryDuplicatedException;
-import io.github.eglecia.sblibrary.model.Author;
 import io.github.eglecia.sblibrary.model.Book;
 import io.github.eglecia.sblibrary.model.EBookGenre;
 import io.github.eglecia.sblibrary.repository.BookRepository;
 import io.github.eglecia.sblibrary.repository.specs.BookSpecs;
+import io.github.eglecia.sblibrary.validator.BookValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -22,9 +24,11 @@ public class BookService {
     // Isso é possível graças à anotação @RequiredArgsConstructor do Lombok, que gera
     // um construtor com todos os campos finais (final) como parâmetros.
     private final BookRepository bookRepository;
+    private final BookValidator validator;
 
     public Book save(Book book) {
         try {
+            validator.validate(book);
             return bookRepository.save(book);
         } catch (DataIntegrityViolationException e) {
             throw new RegistryDuplicatedException("Livro duplicado: " + e.getMostSpecificCause().getMessage());
@@ -39,12 +43,14 @@ public class BookService {
         bookRepository.delete(book);
     }
 
-    public List<Book> find(
+    public Page<Book> find(
             String isbn,
             String title,
             String authorName,
             EBookGenre genre,
-            Integer yearPublished){
+            Integer yearPublished,
+            Integer page,
+            Integer pageSize) {
 
         Specification<Book> spec = (root, query, cb) -> cb.conjunction();
         if(isbn != null && !isbn.isBlank()) {
@@ -63,7 +69,9 @@ public class BookService {
             spec = spec.and(BookSpecs.authorNameLike(authorName));
         }
 
-        return bookRepository.findAll(spec);
+        Pageable pageRequest = PageRequest.of(page, pageSize);
+
+        return bookRepository.findAll(spec, pageRequest);
     }
 
     public void update(Book book) {
@@ -71,7 +79,7 @@ public class BookService {
             throw new IllegalArgumentException("Book ID must not be null for update.");
         }
 
-        //validator.validate(book);
+        validator.validate(book);
         bookRepository.save(book);
     }
 }

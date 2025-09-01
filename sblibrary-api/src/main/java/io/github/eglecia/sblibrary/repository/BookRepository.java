@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface BookRepository extends JpaRepository<Book, UUID>, JpaSpecificationExecutor<Book> {
@@ -17,6 +18,8 @@ public interface BookRepository extends JpaRepository<Book, UUID>, JpaSpecificat
     List<Book> findByAuthorId(UUID authorId);
 
     boolean existsByAuthor(Author author);
+
+    Optional<Book> findByIsbn(String isbn);
 
     // JPQL -> Formato sql mas referenciando as entidades e propriedades
     @Query("SELECT b FROM Book b WHERE b.author.id = :authorId")

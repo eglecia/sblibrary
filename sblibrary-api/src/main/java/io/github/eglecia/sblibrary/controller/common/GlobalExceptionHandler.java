@@ -2,6 +2,7 @@ package io.github.eglecia.sblibrary.controller.common;
 
 import io.github.eglecia.sblibrary.controller.dto.ResponseError;
 import io.github.eglecia.sblibrary.controller.dto.CFieldError;
+import io.github.eglecia.sblibrary.exceptions.InvalidFieldException;
 import io.github.eglecia.sblibrary.exceptions.OperationNotPermitted;
 import io.github.eglecia.sblibrary.exceptions.RegistryDuplicatedException;
 import org.springframework.http.HttpStatus;
@@ -44,6 +45,16 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseError handleOperationNotPermitted(OperationNotPermitted e){
         return ResponseError.defaultResponse(e.getMessage());
+    }
+
+    @ExceptionHandler(InvalidFieldException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ResponseError handleInvalidFieldException(InvalidFieldException e){
+        return new ResponseError(
+                HttpStatus.UNPROCESSABLE_ENTITY.value(),
+                "Invalid field: " + e.getFieldName() + " - " + e.getMessage(),
+                List.of(new CFieldError(e.getFieldName(), e.getMessage()))
+        );
     }
 
     @ExceptionHandler(RuntimeException.class)

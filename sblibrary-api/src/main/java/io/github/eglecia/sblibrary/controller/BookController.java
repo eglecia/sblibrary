@@ -8,11 +8,11 @@ import io.github.eglecia.sblibrary.model.EBookGenre;
 import io.github.eglecia.sblibrary.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -58,19 +58,18 @@ public class BookController implements GenericController{
     }
 
     @GetMapping
-    public ResponseEntity<List<ResultBookDTO>> findBooks(
+    public ResponseEntity<Page<ResultBookDTO>> findBooks(
             @RequestParam(value = "isbn", required = false) String isbn,
             @RequestParam(value = "title", required = false) String title,
             @RequestParam(value = "author-name", required = false) String authorName,
             @RequestParam(value = "genre", required = false) EBookGenre genre,
-            @RequestParam(value = "year-published", required = false) Integer yearPublished
+            @RequestParam(value = "year-published", required = false) Integer yearPublished,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "page-size", defaultValue = "10") Integer pageSize
     ) {
-        var result = bookService.find(isbn, title, authorName, genre, yearPublished);
+        Page<Book> pageResult = bookService.find(isbn, title, authorName, genre, yearPublished, page, pageSize);
 
-        var listDTO = result
-                .stream()
-                .map(bookMapper::toDTO)
-                .collect(Collectors.toList());
+        Page<ResultBookDTO> listDTO = pageResult.map(bookMapper::toDTO);
 
         return ResponseEntity.ok(listDTO);
     }
