@@ -1,0 +1,405 @@
+{
+	"info": {
+		"_postman_id": "fb373b6a-d594-4578-93a9-ae48bf94aacf",
+		"name": "SpringBoot",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26956600"
+	},
+	"item": [
+		{
+			"name": "API-Library",
+			"item": [
+				{
+					"name": "Authors",
+					"item": [
+						{
+							"name": "Criar",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"André\",\n    \"dtBirthday\": \"1976-03-02\",\n    \"nationality\": \"Brasileira\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/authors",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"authors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Detalhes",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/authors/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"authors",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "09366b99-a460-430e-b59d-0f335a05563a"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Atualizar",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Mauricio de Sousa\",\n    \"dtBirthday\": \"1931-06-15\",\n    \"nationality\": \"Brasileira\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/authors/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"authors",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "09366b99-a460-430e-b59d-0f335a05563a"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Pesquisar",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/authors",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"authors"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "George Lucas",
+											"disabled": true
+										},
+										{
+											"key": "nationality",
+											"value": "Brasileira",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deletar",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/authors/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"authors",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "14e7a754-223d-4524-80f1-3dd396ce0a94"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Books",
+					"item": [
+						{
+							"name": "Criar",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"isbn\": \"978-8575303535\",\n    \"title\": \"Livro03\",\n    \"dtPublished\": \"2021-02-02\",\n    \"genre\": \"FICCAO\",\n    \"price\": 22.00,\n    \"idAuthor\": \"14e7a754-223d-4524-80f1-3dd396ce0a94\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/books",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Atualizar",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"isbn\": \"978-0743269513\",\n    \"title\": \"Livro02\",\n    \"dtPublished\": \"1980-02-02\",\n    \"genre\": \"FANTASIA\",\n    \"price\": 11.00,\n    \"idAuthor\": \"14e7a754-223d-4524-80f1-3dd396ce0a94\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/books/:id",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Detalhes",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"isbn\": \"978-0743269513\",\n    \"title\": \"Livro02\",\n    \"dtPublished\": \"1980-02-02\",\n    \"genre\": \"FICCAO\",\n    \"price\": 11.00,\n    \"idAuthor\": \"14e7a754-223d-4524-80f1-3dd396ce0a94\"\n}"
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/books/:id",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "b43b8de5-570f-4d1d-b516-70e4b4e12b65"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Pesquisar",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"isbn\": \"978-0743269513\",\n    \"title\": \"Livro02\",\n    \"dtPublished\": \"1980-02-02\",\n    \"genre\": \"FICCAO\",\n    \"price\": 11.00,\n    \"idAuthor\": \"14e7a754-223d-4524-80f1-3dd396ce0a94\"\n}"
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/books?page=0&page-size=3",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books"
+									],
+									"query": [
+										{
+											"key": "isbn",
+											"value": "12345-67893",
+											"disabled": true
+										},
+										{
+											"key": "title",
+											"value": "Turma",
+											"disabled": true
+										},
+										{
+											"key": "author-name",
+											"value": "Mauricio",
+											"disabled": true
+										},
+										{
+											"key": "genre",
+											"value": "FANTASIA",
+											"disabled": true
+										},
+										{
+											"key": "year-published",
+											"value": "1980",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "page-size",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deletar",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"isbn\": \"978-0743269513\",\n    \"title\": \"Livro02\",\n    \"dtPublished\": \"1980-02-02\",\n    \"genre\": \"FICCAO\",\n    \"price\": 11.00,\n    \"idAuthor\": \"14e7a754-223d-4524-80f1-3dd396ce0a94\"\n}"
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/books/:id",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"books",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "b43b8de5-570f-4d1d-b516-70e4b4e12b65"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
