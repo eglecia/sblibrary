@@ -19,6 +19,7 @@ public abstract class BookMapper {
 
     @Mapping(target = "dtCreated", ignore = true)
     @Mapping(target = "dtUpdated", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "author", expression = "java(authorRepository.findById(dto.idAuthor()).orElse(null))")
     public abstract Book toEntity(RegisterBookDTO dto);
 

@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 public interface AuthorMapper {
     @Mapping(target = "dtCreated", ignore = true)
     @Mapping(target = "dtUpdated", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
 
     Author toEntity(AuthorDTO dto);
     AuthorDTO toDTO(Author entity);
