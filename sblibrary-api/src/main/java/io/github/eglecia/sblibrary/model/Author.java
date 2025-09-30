@@ -41,5 +41,9 @@ public class Author {
     @Column(name = "dt_updated")
     private LocalDateTime dtUpdated;
 
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    private User createdBy;
+
     //Java cria um construtor vazio por padrão
 }

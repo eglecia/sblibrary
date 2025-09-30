@@ -2,8 +2,10 @@ package io.github.eglecia.sblibrary.service;
 
 import io.github.eglecia.sblibrary.exceptions.OperationNotPermitted;
 import io.github.eglecia.sblibrary.model.Author;
+import io.github.eglecia.sblibrary.model.User;
 import io.github.eglecia.sblibrary.repository.AuthorRepository;
 import io.github.eglecia.sblibrary.repository.BookRepository;
+import io.github.eglecia.sblibrary.security.SecurityService;
 import io.github.eglecia.sblibrary.validator.AuthorValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
@@ -21,6 +23,7 @@ public class AuthorService {
     private final AuthorRepository repository;
     private final AuthorValidator validator;
     private final BookRepository bookRepository;
+    private final SecurityService securityService;
 
 // !!! Quando utilizamos RequiredArgsConstructor, o Spring cria um construtor com todos os campos final !!!
 //    public AuthorService(AuthorRepository repository,
@@ -33,6 +36,10 @@ public class AuthorService {
 
     public Author save(Author author) {
         validator.validate(author);
+
+        User loggedUser = securityService.getLoggedUser();
+        author.setCreatedBy(loggedUser);
+
         // Deixe a exceção ser lançada pelo Spring Data JPA, tratando em nível superior
         return repository.save(author);
     }

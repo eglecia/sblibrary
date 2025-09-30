@@ -1,8 +1,6 @@
 package io.github.eglecia.sblibrary.model;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 import lombok.Data;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
@@ -52,6 +50,10 @@ public class Book {
     @LastModifiedDate
     @Column(name = "dt_updated")
     private LocalDateTime dtUpdated;
+
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    private User createdBy;
 
     // Java cria um construtor vazio por padrão
 }

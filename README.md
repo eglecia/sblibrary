@@ -24,3 +24,7 @@ docker run --name libraryapi-prod -e DATASOURCE_URL=jdbc:postgresql://librarydb-
 
 # Ver os logs da aplicação
 docker logs libraryapi-prod
+
+# Usuários de teste
+admin 1234
+oper 4321

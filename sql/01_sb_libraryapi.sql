@@ -44,6 +44,7 @@ CREATE TABLE author(
     name varchar(100) NOT NULL,
     dt_birthday date NOT NULL,
     nationality varchar(50) NOT NULL,
+    id_user UUID,
     dt_created TIMESTAMP WITH TIME ZONE DEFAULT now(),
     dt_updated TIMESTAMP WITH TIME ZONE DEFAULT now()
 );

@@ -3,8 +3,10 @@ package io.github.eglecia.sblibrary.service;
 import io.github.eglecia.sblibrary.exceptions.RegistryDuplicatedException;
 import io.github.eglecia.sblibrary.model.Book;
 import io.github.eglecia.sblibrary.model.EBookGenre;
+import io.github.eglecia.sblibrary.model.User;
 import io.github.eglecia.sblibrary.repository.BookRepository;
 import io.github.eglecia.sblibrary.repository.specs.BookSpecs;
+import io.github.eglecia.sblibrary.security.SecurityService;
 import io.github.eglecia.sblibrary.validator.BookValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -25,10 +27,15 @@ public class BookService {
     // um construtor com todos os campos finais (final) como parâmetros.
     private final BookRepository bookRepository;
     private final BookValidator validator;
+    private final SecurityService securityService;
 
     public Book save(Book book) {
         try {
             validator.validate(book);
+
+            User loggedUser = securityService.getLoggedUser();
+            book.setCreatedBy(loggedUser);
+
             return bookRepository.save(book);
         } catch (DataIntegrityViolationException e) {
             throw new RegistryDuplicatedException("Livro duplicado: " + e.getMostSpecificCause().getMessage());

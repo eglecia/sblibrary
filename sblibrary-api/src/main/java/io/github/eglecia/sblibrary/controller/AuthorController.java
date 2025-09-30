@@ -3,11 +3,16 @@ package io.github.eglecia.sblibrary.controller;
 import io.github.eglecia.sblibrary.controller.dto.AuthorDTO;
 import io.github.eglecia.sblibrary.controller.mappers.AuthorMapper;
 import io.github.eglecia.sblibrary.model.Author;
+import io.github.eglecia.sblibrary.model.User;
+import io.github.eglecia.sblibrary.security.SecurityService;
 import io.github.eglecia.sblibrary.service.AuthorService;
+import io.github.eglecia.sblibrary.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;

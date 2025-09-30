@@ -15,11 +15,26 @@
 						{
 							"name": "Criar",
 							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "1234",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "admin",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"André\",\n    \"dtBirthday\": \"1976-03-02\",\n    \"nationality\": \"Brasileira\"\n}",
+									"raw": "{\n    \"name\": \"Luiz\",\n    \"dtBirthday\": \"1976-04-02\",\n    \"nationality\": \"Brasileira\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -47,6 +62,21 @@
 								"disableBodyPruning": true
 							},
 							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "oper",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "4321",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
 								"header": [],
 								"body": {
@@ -84,11 +114,26 @@
 						{
 							"name": "Atualizar",
 							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "oper",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "4321",
+											"type": "string"
+										}
+									]
+								},
 								"method": "PUT",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\": \"Mauricio de Sousa\",\n    \"dtBirthday\": \"1931-06-15\",\n    \"nationality\": \"Brasileira\"\n}",
+									"raw": "{\n    \"name\": \"Mauricio de Sousa\",\n    \"dtBirthday\": \"1932-06-15\",\n    \"nationality\": \"Brasileira\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -124,6 +169,21 @@
 								"disableBodyPruning": true
 							},
 							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "321",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "admin",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
 								"header": [],
 								"body": {
@@ -208,11 +268,26 @@
 						{
 							"name": "Criar",
 							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "1234",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "admin",
+											"type": "string"
+										}
+									]
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"isbn\": \"978-8575303535\",\n    \"title\": \"Livro03\",\n    \"dtPublished\": \"2021-02-02\",\n    \"genre\": \"FICCAO\",\n    \"price\": 22.00,\n    \"idAuthor\": \"14e7a754-223d-4524-80f1-3dd396ce0a94\"\n}",
+									"raw": "{\n    \"isbn\": \"978-65-01-26730-2\",\n    \"title\": \"LivroDoLuiz\",\n    \"dtPublished\": \"2021-02-02\",\n    \"genre\": \"FICCAO\",\n    \"price\": 22.00,\n    \"idAuthor\": \"3b162d90-da41-4d7a-8f2e-aecd0ea9d52b\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -297,7 +372,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "b43b8de5-570f-4d1d-b516-70e4b4e12b65"
+											"value": "b9db35af-6933-48e4-aa7b-7a3b65cfd1d7"
 										}
 									]
 								}
@@ -310,8 +385,29 @@
 								"disableBodyPruning": true
 							},
 							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "user1",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "4321",
+											"type": "string"
+										}
+									]
+								},
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Basic dXNlcjplZjkxMGExNC00Yjg0LTRjMjctYWZmZS1iOGMxMTJmMjM5MTE=",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "raw",
 									"raw": "{\n    \"isbn\": \"978-0743269513\",\n    \"title\": \"Livro02\",\n    \"dtPublished\": \"1980-02-02\",\n    \"genre\": \"FICCAO\",\n    \"price\": 11.00,\n    \"idAuthor\": \"14e7a754-223d-4524-80f1-3dd396ce0a94\"\n}"
@@ -392,6 +488,40 @@
 											"key": "id",
 											"value": "b43b8de5-570f-4d1d-b516-70e4b4e12b65"
 										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "Criar",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"login\": \"tec\",\n    \"password\": \"4321\",\n    \"roles\": [\n        \"ADMIN\",\n        \"USER\"\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/v1/users",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"users"
 									]
 								}
 							},
