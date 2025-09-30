@@ -7,6 +7,7 @@ import io.github.eglecia.sblibrary.service.AuthorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -25,6 +26,7 @@ public class AuthorController implements GenericController{
     private final AuthorMapper mapper;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> createAuthor(@RequestBody @Valid AuthorDTO dto) {
         Author author = mapper.toEntity(dto);
         authorService.save(author);
@@ -37,6 +39,7 @@ public class AuthorController implements GenericController{
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     public ResponseEntity<AuthorDTO> detailAuthor(@PathVariable("id") String id) {
         UUID idAuthor = UUID.fromString(id);
 
@@ -49,6 +52,7 @@ public class AuthorController implements GenericController{
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteAuthor(@PathVariable("id") String id){
         UUID idAuthor = UUID.fromString(id);
         Optional<Author> authorOptional = authorService.findById(idAuthor);
@@ -61,6 +65,7 @@ public class AuthorController implements GenericController{
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     public ResponseEntity<List<AuthorDTO>> findAuthors(
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "nationality", required = false) String nationality) {
@@ -76,6 +81,7 @@ public class AuthorController implements GenericController{
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> updateAuthor(
             @PathVariable("id") String id, @RequestBody @Valid AuthorDTO authorDTO) {
 

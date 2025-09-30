@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -23,6 +24,7 @@ public class BookController implements GenericController{
     private final BookMapper bookMapper;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     public ResponseEntity<Void> createBook(@RequestBody @Valid RegisterBookDTO bookDTO) {
         // Mapear DTO para entidade
         Book book = bookMapper.toEntity(bookDTO);
@@ -35,6 +37,7 @@ public class BookController implements GenericController{
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     public ResponseEntity<ResultBookDTO> detailBook(@PathVariable("id") String id) {
         UUID idBook = UUID.fromString(id);
 
@@ -47,6 +50,7 @@ public class BookController implements GenericController{
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     public ResponseEntity<Object> deleteBook(@PathVariable("id") String id){
         UUID idBook = UUID.fromString(id);
 
@@ -58,6 +62,7 @@ public class BookController implements GenericController{
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     public ResponseEntity<Page<ResultBookDTO>> findBooks(
             @RequestParam(value = "isbn", required = false) String isbn,
             @RequestParam(value = "title", required = false) String title,
@@ -75,6 +80,7 @@ public class BookController implements GenericController{
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     public ResponseEntity<Object> updateBook(
             @PathVariable("id") String id,
             @RequestBody @Valid RegisterBookDTO bookDTO
