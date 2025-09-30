@@ -56,9 +56,17 @@ CREATE TABLE book(
     dt_published date NOT NULL,
     genre egenre NOT NULL,
     price numeric(18,2) NOT NULL,
+    id_user UUID,
     id_author UUID NOT NULL REFERENCES author(id),
     dt_created TIMESTAMP WITH TIME ZONE DEFAULT now(),
     dt_updated TIMESTAMP WITH TIME ZONE DEFAULT now()
+);
+
+CREATE TABLE users(
+    id UUID NOT NULL PRIMARY KEY,
+    login varchar(20) NOT NULL UNIQUE,
+    password varchar(300) NOT NULL,
+    roles varchar[]
 );
 
 -- JPA não consegue trabalhar direito com tipos enum do banco, então ajudamos aqui ...
