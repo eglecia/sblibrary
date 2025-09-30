@@ -25,6 +25,15 @@ docker run --name libraryapi-prod -e DATASOURCE_URL=jdbc:postgresql://librarydb-
 # Ver os logs da aplicação
 docker logs libraryapi-prod
 
+# Cria uma tag para enviar para o dockerhub
+docker tag eglecia/libraryapi eglecia/libraryapi
+
+# Faz o login no dockerhub
+docker login
+
+# Envia a imagem para o dockerhub
+docker push eglecia/libraryapi
+
 # Usuários de teste
 admin 1234
 oper 4321
