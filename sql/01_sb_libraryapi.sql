@@ -66,6 +66,7 @@ CREATE TABLE book(
 CREATE TABLE users(
     id UUID NOT NULL PRIMARY KEY,
     login varchar(20) NOT NULL UNIQUE,
+    email varchar(100) NOT NULL UNIQUE,
     password varchar(300) NOT NULL,
     roles varchar[]
 );

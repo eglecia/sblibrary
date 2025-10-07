@@ -3,6 +3,7 @@ package io.github.eglecia.sblibrary.controller;
 import io.github.eglecia.sblibrary.controller.dto.UserDTO;
 import io.github.eglecia.sblibrary.controller.mappers.UserMapper;
 import io.github.eglecia.sblibrary.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void save(@RequestBody UserDTO userDTO) {
+    public void save(@RequestBody @Valid UserDTO userDTO) {
         var user = userMapper.toEntity(userDTO);
         userService.save(user);
     }

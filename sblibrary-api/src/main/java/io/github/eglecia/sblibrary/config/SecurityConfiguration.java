@@ -1,5 +1,6 @@
 package io.github.eglecia.sblibrary.config;
 
+import io.github.eglecia.sblibrary.security.LoginSocialSuccessHandler;
 import io.github.eglecia.sblibrary.security.UserSecurity;
 import io.github.eglecia.sblibrary.service.UserService;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +11,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,7 +26,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfiguration {
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpsec) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpsec, LoginSocialSuccessHandler successHandler) throws Exception {
         return httpsec
                 .csrf(AbstractHttpConfigurer::disable)
                 //.formLogin(Customizer.withDefaults()) //Habilita formLogin padrão
@@ -31,11 +34,17 @@ public class SecurityConfiguration {
                     //Por padrão ele guarda um cookie de sessão por meio hora
                     configurer.loginPage("/login");
                 })
+                .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults()) //Habilita autenticação básica entre aplicações
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers("/login").permitAll();
                     authorize.requestMatchers(HttpMethod.POST, "/api/v1/users/**").permitAll(); //Para Teste: Permite criar usuários sem autenticação
                     authorize.anyRequest().authenticated();
+                })
+                .oauth2Login(oauth2 -> {
+                    oauth2
+                        .loginPage("/login")
+                        .successHandler(successHandler);
                 })
                 .build();
     }
@@ -63,8 +72,13 @@ public class SecurityConfiguration {
         return new InMemoryUserDetailsManager(user1, user2);
     }
 
-    @Bean
+    //@Bean
     public UserDetailsService userDetailsService(UserService userService) {
         return new UserSecurity(userService);
+    }
+
+    @Bean
+    public GrantedAuthorityDefaults grantedAuthorityDefaults() {
+        return new GrantedAuthorityDefaults(""); //Remove o prefixo ROLE_ padrão do Spring Security
     }
 }
